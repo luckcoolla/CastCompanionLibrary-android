@@ -1843,6 +1843,10 @@ public class VideoCastManager extends BaseCastManager
                             LOGD(TAG,
                                     "RemoteMediaPlayer::onQueueStatusUpdated() is "
                                             + "reached");
+                            if (mRemoteMediaPlayer == null) {
+                                LOGE(TAG, "onQueueStatusUpdated failed: mRemoteMediaPlayer is null");
+                                return;
+                            }
                             mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
                             if (mMediaStatus != null
                                     && mMediaStatus.getQueueItems() != null) {
@@ -2134,7 +2138,10 @@ public class VideoCastManager extends BaseCastManager
 
     private void onRemoteMediaPreloadStatusUpdated() {
         MediaQueueItem item = null;
-        mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
+        mMediaStatus = null;
+        if (mRemoteMediaPlayer != null) {
+            mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
+        }
         if (mMediaStatus != null) {
             item = mMediaStatus.getQueueItemById(mMediaStatus.getPreloadedItemId());
         }
