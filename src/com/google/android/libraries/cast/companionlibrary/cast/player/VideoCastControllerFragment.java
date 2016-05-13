@@ -154,7 +154,7 @@ public class VideoCastControllerFragment extends Fragment implements
                 }
             }
             MediaInfo info = Utils.bundleToMediaInfo(mediaWrapper);
-            int startPoint = extras.getInt(VideoCastManager.EXTRA_START_POINT, 0);
+            long startPoint = extras.getLong(VideoCastManager.EXTRA_START_POINT, 0);
             onReady(info, shouldStartPlayback && explicitStartActivity, startPoint, customData);
         }
     }
@@ -336,7 +336,7 @@ public class VideoCastControllerFragment extends Fragment implements
      * @param customData An optional custom data to be sent along the load api; it can be
      * {@code null}
      */
-    private void onReady(MediaInfo mediaInfo, boolean shouldStartPlayback, int startPoint,
+    private void onReady(MediaInfo mediaInfo, boolean shouldStartPlayback, long startPoint,
             JSONObject customData) {
         mSelectedMedia = mediaInfo;
         updateClosedCaptionState();
@@ -680,6 +680,8 @@ public class VideoCastControllerFragment extends Fragment implements
                 mCastController.setPlaybackStatus(mPlaybackState);
                 mCastManager.play(seekBar.getProgress());
             } else if (mPlaybackState == MediaStatus.PLAYER_STATE_PAUSED) {
+                //FIXME probable issue, in case if real playback position requires long value
+                // (for example current time in mills is 1463149482000)
                 mCastManager.seek(seekBar.getProgress());
             }
             restartTrickplayTimer();
@@ -750,7 +752,7 @@ public class VideoCastControllerFragment extends Fragment implements
 
     @Override
     public void onAuthResult(MediaAuthStatus status, final MediaInfo info, final String message,
-            final int startPoint, final JSONObject customData) {
+            final long startPoint, final JSONObject customData) {
         if (status == MediaAuthStatus.AUTHORIZED && mAuthSuccess) {
             // successful authorization
             mMediaAuthService = null;

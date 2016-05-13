@@ -40,7 +40,7 @@ public interface MediaAuthListener {
      * @param customData Optional {@link org.json.JSONObject}
      */
     void onAuthResult(MediaAuthStatus status, MediaInfo info, String message,
-            int startPoint, JSONObject customData);
+            long startPoint, JSONObject customData);
 
     /**
      * Called when MediaAuthService returns with a failure message due to some issues such as

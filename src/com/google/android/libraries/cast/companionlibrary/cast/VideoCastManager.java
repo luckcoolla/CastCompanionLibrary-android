@@ -81,6 +81,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.media.MediaRouter.RouteInfo;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.accessibility.CaptioningManager;
@@ -398,7 +399,7 @@ public class VideoCastManager extends BaseCastManager
      * page
      * @param customData Optional {@link JSONObject}
      */
-    public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, int position,
+    public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, long position,
             boolean shouldStart, JSONObject customData) {
         Intent intent = new Intent(context, VideoCastControllerActivity.class);
         intent.putExtra(EXTRA_MEDIA, mediaWrapper);
@@ -420,7 +421,7 @@ public class VideoCastManager extends BaseCastManager
      * @param shouldStart Indicates if the remote playback should start after launching the new
      * page
      */
-    public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, int position,
+    public void startVideoCastControllerActivity(Context context, Bundle mediaWrapper, long position,
             boolean shouldStart) {
         startVideoCastControllerActivity(context, mediaWrapper, position, shouldStart, null);
     }
@@ -450,7 +451,7 @@ public class VideoCastManager extends BaseCastManager
      * @param shouldStart Indicates if the remote playback should start after launching the new page
      */
     public void startVideoCastControllerActivity(Context context,
-            MediaInfo mediaInfo, int position, boolean shouldStart) {
+            MediaInfo mediaInfo, long position, boolean shouldStart) {
         startVideoCastControllerActivity(context, Utils.mediaInfoToBundle(mediaInfo), position,
                 shouldStart);
     }
@@ -976,7 +977,7 @@ public class VideoCastManager extends BaseCastManager
      * @throws NoConnectionException
      * @throws TransientNetworkDisconnectionException
      */
-    public void loadMedia(MediaInfo media, boolean autoPlay, int position)
+    public void loadMedia(MediaInfo media, boolean autoPlay, long position)
             throws TransientNetworkDisconnectionException, NoConnectionException {
         loadMedia(media, autoPlay, position, null);
     }
@@ -992,7 +993,7 @@ public class VideoCastManager extends BaseCastManager
      * @throws NoConnectionException
      * @throws TransientNetworkDisconnectionException
      */
-    public void loadMedia(MediaInfo media, boolean autoPlay, int position, JSONObject customData)
+    public void loadMedia(MediaInfo media, boolean autoPlay, long position, JSONObject customData)
             throws TransientNetworkDisconnectionException, NoConnectionException {
         loadMedia(media, null, autoPlay, position, customData);
     }
@@ -1011,7 +1012,7 @@ public class VideoCastManager extends BaseCastManager
      * @throws TransientNetworkDisconnectionException
      */
     public void loadMedia(MediaInfo media, final long[] activeTracks, boolean autoPlay,
-            int position, JSONObject customData)
+                          long position, JSONObject customData)
             throws TransientNetworkDisconnectionException, NoConnectionException {
         LOGD(TAG, "loadMedia");
         checkConnectivity();
@@ -1554,6 +1555,8 @@ public class VideoCastManager extends BaseCastManager
      * @throws NoConnectionException
      * @throws TransientNetworkDisconnectionException
      */
+    //FIXME probable issue, in case if real playback position requires long value
+    // (for example current time in mills is 1463149482000)
     public void play(int position) throws TransientNetworkDisconnectionException,
             NoConnectionException {
         checkConnectivity();
@@ -1697,7 +1700,7 @@ public class VideoCastManager extends BaseCastManager
      * @throws NoConnectionException
      * @throws TransientNetworkDisconnectionException
      */
-    public void seek(int position) throws TransientNetworkDisconnectionException,
+    public void seek(long position) throws TransientNetworkDisconnectionException,
             NoConnectionException {
         LOGD(TAG, "attempting to seek media");
         checkConnectivity();
