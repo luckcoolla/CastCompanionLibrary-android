@@ -1844,7 +1844,7 @@ public class VideoCastManager extends BaseCastManager
                                     "RemoteMediaPlayer::onQueueStatusUpdated() is "
                                             + "reached");
                             if (mRemoteMediaPlayer == null) {
-                                LOGE(TAG, "onQueueStatusUpdated failed: mRemoteMediaPlayer is null");
+                                LOGE(TAG, "onQueueStatusUpdated() failed: mRemoteMediaPlayer is null");
                                 return;
                             }
                             mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
