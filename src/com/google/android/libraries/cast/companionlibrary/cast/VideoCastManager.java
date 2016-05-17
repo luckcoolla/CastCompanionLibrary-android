@@ -1555,7 +1555,7 @@ public class VideoCastManager extends BaseCastManager
      * @throws NoConnectionException
      * @throws TransientNetworkDisconnectionException
      */
-    //FIXME probable issue, in case if real playback position requires long value
+    // FIXME probable issue, in case if real playback position requires long value
     // (for example current time in mills is 1463149482000)
     public void play(int position) throws TransientNetworkDisconnectionException,
             NoConnectionException {
